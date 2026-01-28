@@ -1,0 +1,96 @@
+[
+  {
+    "test": "floor_plan",
+    "description": "Floor plan with pool, garage, multiple rooms",
+    "code_off": {
+      "success": true,
+      "text": "There are exactly 10 trees and 21 doors shown here.",
+      "code_executed": [],
+      "code_results": [],
+      "images_generated_count": 0,
+      "images_generated": []
+    },
+    "code_on": {
+      "success": true,
+      "text": "Based on the provided floor plan, here are the counts for trees and doors:\n\n### **Trees: 12**\nThere are **12 palm trees** visible around the exterior of the property:\n*   **8 palm trees** are lined up along the top edge of the floor plan.\n*   **4 palm trees** are located in a row at the bottom right corner near the patio.\n*   (Note: There are several other smaller green plants or bushes located on the terraces, in the gym, and in the bathroom, but these are generally represented as potted plants or small bushes rather than trees.)\n\n### **Doors: 18**\nThere are **18 doors** (including door leaves and sliding panels) identified by their typical architectural symbols (arcs for swinging doors and parallel lines for sliding doors):\n1.  **3 doors** in the top-left exterior walkway area (one from the driveway, one to the terrace, and one from the laundry room).\n2.  **1 door** between the laundry room and the interior hallway.\n3.  **1 door** from the interior hallway into the gym.\n4.  **1 door** from the interior hallway to the terrace (located between the living room and the gym).\n5.  **2 doors** (a double door) from the living room to the terrace.\n6.  **1 door** from the main hall to the terrace.\n7.  **1 door** from the main hall leading to the outside on the right.\n8.  **1 door** from the main hall into the wine cellar.\n9.  **1 door** from the main hall into the guest bathroom.\n10. **1 door** from the main hall into the guest bedroom.\n11. **1 door** (sliding glass door) from the guest bedroom to the patio.\n12. **1 door** from the gym to the garage.\n13. **1 door** from the gym to the bathroom.\n14. **1 door** from the gym to the terrace.\n15. **1 door** from the bathroom to the terrace.\n16. **1 door** from the driveway into the corridor leading to the terrace (counted in point 1).\n\nTotal: 17 swinging door leaves (arcs) + 1 sliding door = **18 doors** in total.",
+      "code_executed": [
+        "import PIL.Image\nimport PIL.ImageDraw\n\n# Load the image to get dimensions\nimg = PIL.Image.open('input_file_0.jpeg')\nwidth, height = img.size\n\n# Detect trees and doors.\n# Trees (palm trees specifically, plus any other obvious ones):\n# Top row: [0, 140, 180, 520]\n# Bottom right: [750, 810, 990, 960]\n\n# Doors symbols:\n# Search throughout the image.\n\n# Let's crop and look closer.\nobjs = [\n    {'box_2d': [0, 140, 180, 520], 'label': 'top_trees'},\n    {'box_2d': [740, 800, 995, 965], 'label': 'bottom_right_trees'},\n    {'box_2d': [435, 212, 555, 330], 'label': 'left_doors'},\n    {'box_2d': [230, 395, 385, 480], 'label': 'laundry_living_doors'},\n    {'box_2d': [280, 750, 485, 955], 'label': 'hall_doors'},\n    {'box_2d': [540, 240, 750, 455], 'label': 'gym_bath_doors'},\n    {'box_2d': [380, 595, 450, 770], 'label': 'top_terrace_doors'},\n    {'box_2d': [550, 765, 700, 900], 'label': 'guest_bedroom_doors'}\n]\n\n# Helper to crop and save\ndef save_crops(img, objs, prefix):\n    for i, obj in enumerate(objs):\n        ymin, xmin, ymax, xmax = obj['box_2d']\n        left, top, right, bottom = xmin * width / 1000, ymin * height / 1000, xmax * width / 1000, ymax * height / 1000\n        crop = img.crop((left, top, right, bottom))\n        crop.save(f'{prefix}_{i}.png')\n\nsave_crops(img, objs, 'crop')\n"
+      ],
+      "code_results": [],
+      "images_generated_count": 8,
+      "images_generated": [
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAARkAAABgCAIAAACmKJH9AACrCElEQVR4nOz917NmSZIfiHnoIz959U2dpbpUqxE9g8FgZgAsDLu2... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAHoAAACICAIAAACnYWihAABf2klEQVR4nNX9WcxlWZYehq219nCmO/5jzBmRkXNWZtY89CD2QFGw... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAFcAAABACAIAAADgeXwYAAAcw0lEQVR4nIV7W68kWXbWt9baOyIy85xTt+6u7hpPd3WPezwt2zLG... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAD8AAABTCAIAAACnC0ipAAAb0UlEQVR4nM17a6wlWXXet9bau6rO497bt7un5wlMhjHDgFBsYiUR... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAJgAAABtCAIAAADS/z/cAABeA0lEQVR4nL39abgty1UYCK4hIjJzD2e499zpzZP0NCMJxGhkA2qw... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAJ8AAABwCAIAAACPazXgAABkrklEQVR4nMX9e9Bk13EfCP4y85z7qKrv0e9udONJggAIgA+RepCU... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAIIAAAAmCAIAAACH7NRSAAAezklEQVR4nH17S68sWXbWtx47IvJ1zrn33Hp3VburqrvddmNsNzZI... <truncated>"
+        },
+        {
+          "mime_type": "image/png",
+          "data_preview": "iVBORw0KGgoAAAANSUhEUgAAAGQAAABQCAIAAABga0e4AAAw5ElEQVR4nM28ebSdR3Unuveuqm840x1179XVPNlYnmRjsB2aBmw/... <truncated>"
+        }
+      ]
+    }
+  },
+  {
+    "test": "fittings",
+    "description": "Lighting plan with blue=new fittings, red=original",
+    "code_off": {
+      "success": true,
+      "text": "Based on the lighting plan provided:\n\n*   **New / Extra Fittings (blue squares and rectangles):** 17\n*   **Original Fittings (red circles):** 12",
+      "code_executed": [],
+      "code_results": [],
+      "images_generated_count": 0,
+      "images_generated": []
+    },
+    "code_on": {
+      "success": true,
+      "text": "Based on the lighting plan provided, here is the exact count for each category of fittings:\n\n### **New / Extra Fittings (Blue squares and rectangles): 17**\n*   **Entrance (top center):** 2 squares (one on each side of the door).\n*   **Top-left room (dining):** 2 squares (one in the top-left corner and one in the bottom-right area).\n*   **Top-right room (living):** 5 fittings total (1 square in the top-left, 2 long horizontal rectangles near the sofa, 1 square below the lower rectangle, and 1 square near the TV).\n*   **Kitchen (bottom-left):** 4 squares (1 on the top counter, 1 on the left counter, and 2 on the island).\n*   **Central hallway:** 1 long vertical rectangle located between the kitchen and the bottom-right dining area.\n*   **Bottom-right room (dining):** 3 squares (1 at the top entrance, 1 in the center of the table, and 1 on the right wall).\n\n### **Original Fittings (Red circles): 12**\n*   **Top-left room (dining):** 3 circles (one near the top wall, one in the center of the round table, and one in the bottom-left corner).\n*   **Top-right room (living):** 3 circles (one in the top-right corner, one large circle in the center, and one in the bottom-left area above the partition wall).\n*   **Kitchen (bottom-left):** 4 circles (one in the top-left corner, one in the middle of the floor, one in the bottom-left corner, and one near the bottom of the island).\n*   **Bottom-right room (dining):** 2 circles (one in the top-right corner and one in the bottom-right corner).\n\n**Summary:**\n*   **New / Extra Fittings:** 17\n*   **Original Fittings:** 12",
+      "code_executed": [
+        "import PIL.Image\nimport PIL.ImageDraw\n\n# Open the image to get its dimensions\nimg = PIL.Image.open('input_file_0.jpeg')\nwidth, height = img.size\n\n# Detect objects manually for counting and zoom\n# Red Circles (Original Fittings)\n# Blue Squares/Rectangles (New / Extra Fittings)\n\n# Red circles:\n# 1. Top left room, top: (361, 237)\n# 2. Top left room, bottom left: (259, 456)\n# 3. Top right room, top right corner: (749, 185)\n# 4. Top right room, large center: (630, 303)\n# 5. Top right room, bottom center: (517, 456)\n# 6. Kitchen, top left: (233, 535)\n# 7. Kitchen, middle: (297, 672)\n# 8. Kitchen, bottom left: (233, 891)\n# 9. Kitchen, bottom middle: (297, 826)\n# 10. Bottom right room, top right: (611, 526)\n# 11. Bottom right room, bottom right: (611, 902)\n\n# Blue shapes:\n# 1. Entrance left: (371, 131)\n# 2. Entrance right: (456, 131)\n# 3. Top left room, top left corner: (241, 235)\n# 4. Top left room, bottom right: (358, 454)\n# 5. Top right room, top left: (510, 186)\n# 6. Top right room, upper long rect: (628, 215)\n# 7. Top right room, lower long rect: (628, 392)\n# 8. Top right room, middle right: (628, 455)\n# 9. Top right room, bottom right near TV: (765, 455)\n# 10. Kitchen, top counter: (358, 527)\n# 11. Kitchen, left counter: (230, 737)\n# 12. Kitchen, island top: (358, 736)\n# 13. Kitchen, island bottom: (358, 864)\n# 14. Middle vertical rect: (436, 746)\n# 15. Bottom right room, top: (514, 529)\n# 16. Bottom right room, table center: (552, 694)\n# 17. Bottom right room, right wall: (628, 703)\n\n# Let's perform detection to be sure.\nobjs = [\n    # Red circles\n    {'box_2d': [210, 345, 265, 385], 'label': 'original_red'}, # TL room top\n    {'box_2d': [435, 240, 485, 285], 'label': 'original_red'}, # TL room bottom left\n    {'box_2d': [160, 730, 215, 770], 'label': 'original_red'}, # TR room top right\n    {'box_2d': [255, 600, 350, 665], 'label': 'original_red'}, # TR room center (large)\n    {'box_2d': [435, 495, 485, 540], 'label': 'original_red'}, # TR room bottom center\n    {'box_2d': [510, 215, 560, 255], 'label': 'original_red'}, # Kitchen top left\n    {'box_2d': [650, 280, 700, 320], 'label': 'original_red'}, # Kitchen middle\n    {'box_2d': [860, 215, 915, 255], 'label': 'original_red'}, # Kitchen bottom left\n    {'box_2d': [800, 280, 855, 320], 'label': 'original_red'}, # Kitchen bottom middle\n    {'box_2d': [505, 590, 555, 630], 'label': 'original_red'}, # BR room top right\n    {'box_2d': [875, 590, 930, 630], 'label': 'original_red'}, # BR room bottom right\n\n    # Blue shapes\n    {'box_2d': [100, 350, 160, 395], 'label': 'new_blue_sq'}, # Entrance left\n    {'box_2d': [100, 435, 160, 480], 'label': 'new_blue_sq'}, # Entrance right\n    {'box_2d': [210, 225, 265, 265], 'label': 'new_blue_sq'}, # TL room top left\n    {'box_2d': [430, 335, 485, 380], 'label': 'new_blue_sq'}, # TL room bottom right\n    {'box_2d': [160, 485, 215, 530], 'label': 'new_blue_sq'}, # TR room top left\n    {'box_2d': [195, 550, 235, 705], 'label': 'new_blue_rect'}, # TR room upper rect\n    {'box_2d': [375, 555, 415, 705], 'label': 'new_blue_rect'}, # TR room lower rect\n    {'box_2d': [430, 605, 485, 650], 'label': 'new_blue_sq'}, # TR room middle right\n    {'box_2d': [425, 745, 485, 785], 'label': 'new_blue_sq'}, # TR room bottom right (near TV)\n    {'box_2d': [500, 335, 555, 380], 'label': 'new_blue_sq'}, # Kitchen top counter\n    {'box_2d': [710, 210, 765, 255], 'label': 'new_blue_sq'}, # Kitchen left counter\n    {'box_2d': [705, 335, 765, 380], 'label': 'new_blue_sq'}, # Kitchen island top\n    {'box_2d': [835, 335, 895, 380], 'label': 'new_blue_sq'}, # Kitchen island bottom\n    {'box_2d': [635, 420, 855, 455], 'label': 'new_blue_rect_v'}, # Middle vertical rect\n    {'box_2d': [505, 495, 560, 540], 'label': 'new_blue_sq'}, # BR room top\n    {'box_2d': [660, 530, 715, 575], 'label': 'new_blue_sq'}, # BR room table center\n    {'box_2d': [670, 610, 725, 645], 'label': 'new_blue_sq'}, # BR room right wall\n]\n\n# Create crops to double check.\n# Let's crop in 4 quadrants.\nimg.crop((0, 0, width//2, height//2)).save('top_left.jpeg')\nimg.crop((width//2, 0, width, height//2)).save('top_right.jpeg')\nimg.crop((0, height//2, width//2, height)).save('bottom_left.jpeg')\nimg.crop((width//2, height//2, width, height)).save('bottom_right.jpeg')\n"
+      ],
+      "code_results": [],
+      "images_generated_count": 4,
+      "images_generated": [
+        {
+          "mime_type": "image/jpeg",
+          "data_preview": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx... <truncated>"
+        },
+        {
+          "mime_type": "image/jpeg",
+          "data_preview": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx... <truncated>"
+        },
+        {
+          "mime_type": "image/jpeg",
+          "data_preview": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx... <truncated>"
+        },
+        {
+          "mime_type": "image/jpeg",
+          "data_preview": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAx... <truncated>"
+        }
+      ]
+    }
+  }
+]
