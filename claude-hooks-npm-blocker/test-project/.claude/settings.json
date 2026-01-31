@@ -1,0 +1,24 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command // \"\"' | grep -qE '\\b(npm|yarn|npx|pnpm)\\b' && echo 'BLOCKED: This project uses Bun. Use bun instead of npm/yarn/npx/pnpm.' >&2 && exit 2 || exit 0"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/block-npm-in-files.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

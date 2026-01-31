@@ -7,6 +7,7 @@ Code experiments accompanying blog posts at [augusteo.com](https://augusteo.com)
 | Experiment | Blog Post |
 |------------|-----------|
 | gemini-3-flash-agentic-vision | [Gemini Stops Hallucinating When You Give It Python](https://augusteo.com/blog/til-gemini-agentic-vision) |
+| claude-hooks-npm-blocker | [How I Made Claude Code Physically Incapable of Using npm](https://augusteo.com/blog/enforcing-bun-with-hooks) |
 
 ## Experiment Structure
 
